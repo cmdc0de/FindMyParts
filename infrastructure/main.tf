@@ -85,6 +85,36 @@ resource "aws_lambda_function" "storage_device_type_scan" {
   source_code_hash = data.archive_file.zip_the_python_code.output_sha
 }
 
+resource "aws_lambda_function" "put_storage_instance_lambda_handler" {
+  filename      = "storage_device_type.zip"
+  function_name = "put_storage_instance_lambda_handler"
+  role          = aws_iam_role.lambda_role.arn
+  handler       = "storage_device_type.put_storage_instance_lambda_handler"
+  runtime       = "python3.8"
+  depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
+  source_code_hash = data.archive_file.zip_the_python_code.output_sha
+}
+
+resource "aws_lambda_function" "delete_storage_instance_lambda_handler" {
+  filename      = "storage_device_type.zip"
+  function_name = "delete_storage_instance_lambda_handler"
+  role          = aws_iam_role.lambda_role.arn
+  handler       = "storage_device_type.delete_storage_instance_lambda_handler"
+  runtime       = "python3.8"
+  depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
+  source_code_hash = data.archive_file.zip_the_python_code.output_sha
+}
+
+resource "aws_lambda_function" "scan_storage_instance_lambda_handler" {
+  filename      = "storage_device_type.zip"
+  function_name = "scan_storage_instance_lambda_handler"
+  role          = aws_iam_role.lambda_role.arn
+  handler       = "storage_device_type.scan_storage_instance_lambda_handler"
+  runtime       = "python3.8"
+  depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
+  source_code_hash = data.archive_file.zip_the_python_code.output_sha
+}
+
 resource "aws_lambda_function_url" "url_for_storage_device_type_scan" {
   function_name      = aws_lambda_function.storage_device_type_scan.function_name
   authorization_type = "NONE"
@@ -127,3 +157,47 @@ resource "aws_lambda_function_url" "url_for_storage_device_type_delete_item" {
     max_age           = 86400
   }
 }
+
+
+resource "aws_lambda_function_url" "url_for_storage_instance_type_delete_item" {
+  function_name      = aws_lambda_function.delete_storage_instance_lambda_handler.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["*"]
+    allow_headers     = ["date", "keep-alive"]
+    expose_headers    = ["keep-alive", "date"]
+    max_age           = 86400
+  }
+}
+
+resource "aws_lambda_function_url" "url_for_storage_instance_type_put_item" {
+  function_name      = aws_lambda_function.put_storage_instance_lambda_handler.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["*"]
+    allow_headers     = ["date", "keep-alive"]
+    expose_headers    = ["keep-alive", "date"]
+    max_age           = 86400
+  }
+}
+
+resource "aws_lambda_function_url" "url_for_scan_storage_instance_lambda_handler" {
+  function_name      = aws_lambda_function.scan_storage_instance_lambda_handler.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["*"]
+    allow_headers     = ["date", "keep-alive"]
+    expose_headers    = ["keep-alive", "date"]
+    max_age           = 86400
+  }
+}
+
