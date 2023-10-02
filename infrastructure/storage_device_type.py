@@ -56,9 +56,17 @@ def handle_error(error):
 def put_item_lambda_handler(event, context):
     dynamodb_resource = boto3.resource('dynamodb')
     table = dynamodb_resource.Table('storage_device_type')
+    
+    body = {}
+    if 'body' in event:
+        body = json.loads(event['body'])
+    else:
+        body = event
+
+    #print(type(body))
 
     try:
-        response = table.put_item(**event)
+        response = table.put_item(**body)
         return response
     except ClientError as error:
         return handle_error(error)
@@ -73,7 +81,13 @@ def put_item_lambda_handler(event, context):
 def delete_item_lambda_handler(event, context):
     dynamodb_resource = boto3.resource('dynamodb')
     table = dynamodb_resource.Table('storage_device_type')
-    print(repr(context))
+    #print(repr(context))
+    
+    body = {}
+    if 'body' in event:
+        body = json.loads(event['body'])
+    else:
+        body = event
 
     try:
         deleteItemTable = {
@@ -81,7 +95,7 @@ def delete_item_lambda_handler(event, context):
             "Key" : { }
         }
         key = {}
-        key["storage_device_type_id"] = event['storage_device_type_id']
+        key["storage_device_type_id"] = body['storage_device_type_id']
         deleteItemTable['Key'] = key
         return table.delete_item(**deleteItemTable)
 
@@ -105,4 +119,5 @@ def scan_lambda_handler(event, context):
         return handle_error(error)
     except BaseException as error:
         return { 'message' : "Unknown error while putting item: "+ repr(error) }
+
 

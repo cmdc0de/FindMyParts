@@ -4,21 +4,19 @@ provider "aws" {
 
 resource "aws_iam_role" "lambda_role" {
   name               = "eoc_lambda_role"
-  assume_role_policy = <<EOF
-{
- "Version": "2012-10-17",
- "Statement": [
-   {
-     "Action": "sts:AssumeRole",
-     "Principal": {
-       "Service": "lambda.amazonaws.com"
-     },
-     "Effect": "Allow",
-     "Sid": ""
-   }
- ]
-}
-EOF
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
 }
 
 data "aws_iam_policy_document" "lambda_policy_doc" {
@@ -32,7 +30,8 @@ data "aws_iam_policy_document" "lambda_policy_doc" {
 
     resources = [
       "arn:aws:logs:*:*:*",
-      "arn:aws:dynamodb:*:*:*"
+      "arn:aws:dynamodb:*:*:*",
+      "arn:aws:lambda:*:*:*"
     ]
     effect = "Allow"
   }
@@ -40,7 +39,7 @@ data "aws_iam_policy_document" "lambda_policy_doc" {
 
 resource "aws_iam_policy" "iam_policy_for_lambda" {
   name   = "aws_iam_policy_for_terraform_aws_lambda_role"
-  path   = "/"
+  path   = "/fmp/"
   policy = data.aws_iam_policy_document.lambda_policy_doc.json
 }
 
@@ -86,3 +85,45 @@ resource "aws_lambda_function" "storage_device_type_scan" {
   source_code_hash = data.archive_file.zip_the_python_code.output_sha
 }
 
+resource "aws_lambda_function_url" "url_for_storage_device_type_scan" {
+  function_name      = aws_lambda_function.storage_device_type_scan.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["*"]
+    allow_headers     = ["date", "keep-alive"]
+    expose_headers    = ["keep-alive", "date"]
+    max_age           = 86400
+  }
+}
+
+
+resource "aws_lambda_function_url" "url_for_storage_device_type_put_item" {
+  function_name      = aws_lambda_function.storage_device_type_put_item.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["*"]
+    allow_headers     = ["date", "keep-alive"]
+    expose_headers    = ["keep-alive", "date"]
+    max_age           = 86400
+  }
+}
+
+resource "aws_lambda_function_url" "url_for_storage_device_type_delete_item" {
+  function_name      = aws_lambda_function.storage_device_type_delete_item.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["*"]
+    allow_headers     = ["date", "keep-alive"]
+    expose_headers    = ["keep-alive", "date"]
+    max_age           = 86400
+  }
+}

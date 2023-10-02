@@ -1,0 +1,12 @@
+{
+   "TableName": "storage_device_type",
+   "Item": {
+      "storage_device_type_id": "123456", 
+      "name": "3x10", 
+      "model_uri": "test.step", 
+      "length": 60, 
+      "width": 60, 
+      "height": 160, 
+      "unit_type": "cm"
+   }
+}
