@@ -279,7 +279,7 @@ def delete_component_type_lambda_handler(event, context):
 # scan return all
 ###########################################
 def scan_component_type_lambda_handler(event, context):
-    scanInput = { "TableName": "storage_device_instance" }
+    scanInput = { "TableName": "component_type" }
 
     try:
         dynamodb_resource = boto3.resource('dynamodb')
