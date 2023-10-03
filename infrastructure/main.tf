@@ -55,31 +55,31 @@ data "archive_file" "zip_the_python_code" {
   output_path  = "storage_device_type.zip"
 }
 
-resource "aws_lambda_function" "storage_device_type_put_item" {
+resource "aws_lambda_function" "put_storage_device_type_lambda_handler" {
   filename      = "storage_device_type.zip"
-  function_name = "storage_device_type_put_item"
+  function_name = "put_storage_device_type_lambda_handler"
   role          = aws_iam_role.lambda_role.arn
-  handler       = "storage_device_type.put_item_lambda_handler"
+  handler       = "storage_device_type.put_storage_device_type_lambda_handler"
   runtime       = "python3.8"
   depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
   source_code_hash = data.archive_file.zip_the_python_code.output_sha
 }
 
-resource "aws_lambda_function" "storage_device_type_delete_item" {
+resource "aws_lambda_function" "delete_storage_device_type_lambda_handler" {
   filename      = "storage_device_type.zip"
-  function_name = "storage_device_type_delete_item"
+  function_name = "delete_storage_device_type_lambda_handler"
   role          = aws_iam_role.lambda_role.arn
-  handler       = "storage_device_type.delete_item_lambda_handler"
+  handler       = "storage_device_type.delete_storage_device_type_lambda_handler"
   runtime       = "python3.8"
   depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
   source_code_hash = data.archive_file.zip_the_python_code.output_sha
 }
 
-resource "aws_lambda_function" "storage_device_type_scan" {
+resource "aws_lambda_function" "scan_storage_device_type_lambda_handler" {
   filename      = "storage_device_type.zip"
-  function_name = "storage_device_type_scan"
+  function_name = "scan_storage_device_type_lambda_handler"
   role          = aws_iam_role.lambda_role.arn
-  handler       = "storage_device_type.scan_lambda_handler"
+  handler       = "storage_device_type.scan_storage_device_type_lambda_handler"
   runtime       = "python3.8"
   depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
   source_code_hash = data.archive_file.zip_the_python_code.output_sha
@@ -145,8 +145,8 @@ resource "aws_lambda_function" "scan_component_type_lambda_handler" {
   source_code_hash = data.archive_file.zip_the_python_code.output_sha
 }
 
-resource "aws_lambda_function_url" "url_for_storage_device_type_scan" {
-  function_name      = aws_lambda_function.storage_device_type_scan.function_name
+resource "aws_lambda_function_url" "url_for_scan_storage_device_type_lambda_handler" {
+  function_name      = aws_lambda_function.scan_storage_device_type_lambda_handler.function_name
   authorization_type = "NONE"
 
   cors {
@@ -160,8 +160,8 @@ resource "aws_lambda_function_url" "url_for_storage_device_type_scan" {
 }
 
 
-resource "aws_lambda_function_url" "url_for_storage_device_type_put_item" {
-  function_name      = aws_lambda_function.storage_device_type_put_item.function_name
+resource "aws_lambda_function_url" "url_for_put_storage_device_type_lambda_handler" {
+  function_name      = aws_lambda_function.put_storage_device_type_lambda_handler.function_name
   authorization_type = "NONE"
 
   cors {
@@ -174,8 +174,8 @@ resource "aws_lambda_function_url" "url_for_storage_device_type_put_item" {
   }
 }
 
-resource "aws_lambda_function_url" "url_for_storage_device_type_delete_item" {
-  function_name      = aws_lambda_function.storage_device_type_delete_item.function_name
+resource "aws_lambda_function_url" "url_for_delete_storage_device_type_lambda_handler" {
+  function_name      = aws_lambda_function.delete_storage_device_type_lambda_handler.function_name
   authorization_type = "NONE"
 
   cors {

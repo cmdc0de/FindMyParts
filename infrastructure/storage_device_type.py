@@ -53,7 +53,7 @@ def handle_error(error):
 #     }
 # }
 ##########################################
-def put_item_lambda_handler(event, context):
+def put_storage_device_type_lambda_handler(event, context):
     dynamodb_resource = boto3.resource('dynamodb')
     table = dynamodb_resource.Table('storage_device_type')
     
@@ -78,7 +78,7 @@ def put_item_lambda_handler(event, context):
 #   "storage_device_type_id" : "123456"
 # }
 ############################################
-def delete_item_lambda_handler(event, context):
+def delete_storage_device_type_lambda_handler(event, context):
     dynamodb_resource = boto3.resource('dynamodb')
     table = dynamodb_resource.Table('storage_device_type')
     #print(repr(context))
@@ -108,7 +108,7 @@ def delete_item_lambda_handler(event, context):
 ############################################
 # scan return all
 ###########################################
-def scan_lambda_handler(event, context):
+def scan_storage_device_type_lambda_handler(event, context):
     scanInput = { "TableName": "storage_device_type" }
 
     try:

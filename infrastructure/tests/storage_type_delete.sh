@@ -1,3 +1,4 @@
 #!/bin/bash
+source ./function_urls
+curl -H "Content-Type: application/json" -d @storage_type_delete.json  $STD
 
-curl -H "Content-Type: application/json" -d @storage_device_type_delete.json  https://txhyivc5urppj66xsfvvkovqqu0uiyde.lambda-url.us-west-2.on.aws/
