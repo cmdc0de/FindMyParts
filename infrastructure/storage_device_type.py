@@ -157,6 +157,7 @@ def put_storage_instance_lambda_handler(event, context):
 ############################################
 # {
 #   "storage_device_instance_id": "1"
+#   "storage_device_type_id": "123456", 
 # }
 ############################################
 def delete_storage_instance_lambda_handler(event, context):
@@ -177,6 +178,7 @@ def delete_storage_instance_lambda_handler(event, context):
         }
         key = {}
         key["storage_device_instance_id"] = body['storage_device_instance_id']
+        key["storage_device_type_id"]     = body['storage_device_type_id']
         deleteItemTable['Key'] = key
         return table.delete_item(**deleteItemTable)
 
