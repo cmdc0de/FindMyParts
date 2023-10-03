@@ -1,0 +1,10 @@
+ {
+   "TableName": "storage_device_instance",
+   "Item": {
+      "storage_device_instance_id": "1",
+      "storage_type_id": "123456", 
+      "version": "1",
+      "name": "Instance3x10", 
+      "description": "Instance3x10"
+   }
+}

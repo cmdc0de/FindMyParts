@@ -202,3 +202,90 @@ def scan_storage_instance_lambda_handler(event, context):
         return { 'message' : "Unknown error while putting item: "+ repr(error) }
 
 
+##########################################
+# put item
+# {
+#     "TableName": "component_type",
+#     "Item": {
+#         "component_type_id": "1",
+#         "manufacturing_id": "K123456", 
+#         "version": "1",
+#         "name": "component1", 
+#         "description": "component description",
+#         "footprint": "footprint",
+#         "width": "mm", 
+#         "height": "mm",
+#         "length": "mm",
+#         "model3d": "stp.stp",
+#     }
+# }
+##########################################
+def put_component_lambda_handler(event, context):
+    dynamodb_resource = boto3.resource('dynamodb')
+    table = dynamodb_resource.Table('component_type')
+    
+    body = {}
+    if 'body' in event:
+        body = json.loads(event['body'])
+    else:
+        body = event
+
+    #print(body)
+    #print(type(body))
+
+    try:
+        response = table.put_item(**body)
+        return response
+    except ClientError as error:
+        return handle_error(error)
+    except BaseException as error:
+        return { 'message' : "Unknown error while putting item: "+ repr(error) }
+
+############################################
+# {
+#   "storage_device_instance_id": "1"
+# }
+############################################
+def delete_component_type_lambda_handler(event, context):
+    dynamodb_resource = boto3.resource('dynamodb')
+    table = dynamodb_resource.Table('component_type')
+    #print(repr(context))
+    
+    body = {}
+    if 'body' in event:
+        body = json.loads(event['body'])
+    else:
+        body = event
+
+    try:
+        deleteItemTable = {
+            "TableName": "component_type",
+            "Key" : { }
+        }
+        key = {}
+        key["component_type_id"] = body['component_type_id']
+        deleteItemTable['Key'] = key
+        return table.delete_item(**deleteItemTable)
+
+    except ClientError as error:
+        return handle_error(error)
+    except BaseException as error:
+        return { 'message' : "Unknown error while deleting: "+ repr(error) }
+
+
+############################################
+# scan return all
+###########################################
+def scan_component_type_lambda_handler(event, context):
+    scanInput = { "TableName": "storage_device_instance" }
+
+    try:
+        dynamodb_resource = boto3.resource('dynamodb')
+        table = dynamodb_resource.Table('component_type')
+        return table.scan(**scanInput)
+    except ClientError as error:
+        return handle_error(error)
+    except BaseException as error:
+        return { 'message' : "Unknown error while putting item: "+ repr(error) }
+
+

@@ -1,0 +1,15 @@
+{
+   "TableName": "component_type",
+   "Item": {
+      "component_type_id": "1",
+      "manufacturing_id": "K123456", 
+      "version": "1",
+      "name": "component1", 
+      "description": "component description",
+      "footprint": "footprint",
+      "width": "mm", 
+      "height": "mm",
+      "length": "mm",
+      "model3d": "stp.stp"
+   }
+}
